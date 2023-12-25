@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static "assets/style.css" %}" rel="stylesheet">
+    <link href="{% static "assets/bootstrap.min.css" %}" rel="stylesheet">
+
+</head>
+<body>
+ <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+      <h5 class="my-0 mr-md-auto font-weight-normal">Company name</h5>
+      <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="#">Features</a>
+        <a class="p-2 text-dark" href="#">Enterprise</a>
+        <a class="p-2 text-dark" href="#">Support</a>
+        <a class="p-2 text-dark" href="#">Pricing</a>
+      </nav>
+      <a class="btn btn-outline-primary" href="#">Sign up</a>
+    </div>
+<div id="header">
+    <span class="logo">Bookmarks</span>
+    {% if request.user.is_authenticated %}
+        <ul class="menu">
+            <li {% if section == "dashboard" %}class="selected"{% endif %}>
+                <a href="{% url "dashboard" %}">My dashboard</a>
+            </li>
+            <li {% if section == "images" %}class="selected"{% endif %}>
+                <a href="#">Images</a>
+            </li>
+            <li {% if section == "people" %}class="selected"{% endif %}>
+                <a href="#">People</a>
+            </li>
+        </ul>
+    {% endif %}
+    <span class="user">
+{% if request.user.is_authenticated %}
+    Hello {{ request.user.first_name|default:request.user.username }},
+    <a href="{% url "logout" %}">Logout</a>
+{% else %}
+    <a href="{% url "login" %}">Log-in</a>
+{% endif %}
+</span>
+</div>
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+</html>
